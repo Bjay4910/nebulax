@@ -158,7 +158,6 @@ function SpecCard({ spec, index, visible }: { spec: Spec; index: number; visible
 export function Specs() {
   const [imgHovered, setImgHovered] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
-  const [cardsVisible, setCardsVisible] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
