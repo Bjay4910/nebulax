@@ -23,9 +23,9 @@ As the user scrolls, a Mars rover explodes apart frame by frame on a pinned canv
 - GSAP
 - HTML5 Canvas
 
-## Asset Pipeline
+## How it was built
 
-Video generated with Kling 3.0 Pro → FFmpeg frame extraction → Canvas flipbook
+Designed and developed using an AI-assisted workflow — from asset generation to frontend implementation.
 
 ## Built by
 
