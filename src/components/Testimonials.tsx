@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const testimonials = [
   {
@@ -28,16 +29,17 @@ interface Testimonial {
   initials: string;
 }
 
-function TestimonialCard({ t, index, visible }: { t: Testimonial; index: number; visible: boolean }) {
+function TestimonialCard({ t, index, visible, isMobile }: { t: Testimonial; index: number; visible: boolean; isMobile: boolean }) {
   const [hovered, setHovered] = useState(false);
+  const active = hovered || isMobile;
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        backgroundColor: hovered ? 'rgba(226,91,45,0.06)' : 'rgba(255,255,255,0.02)',
-        border: hovered ? '1px solid rgba(226,91,45,0.3)' : '1px solid rgba(255,255,255,0.06)',
+        backgroundColor: active ? 'rgba(226,91,45,0.06)' : 'rgba(255,255,255,0.02)',
+        border: active ? '1px solid rgba(226,91,45,0.3)' : '1px solid rgba(255,255,255,0.06)',
         borderRadius: '1.5rem',
         padding: '2.5rem',
         boxSizing: 'border-box',
@@ -116,6 +118,7 @@ function TestimonialCard({ t, index, visible }: { t: Testimonial; index: number;
 export function Testimonials() {
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const check = () => {
@@ -136,7 +139,7 @@ export function Testimonials() {
       width: '100%',
       backgroundColor: '#0B0B0C',
       color: '#ffffff',
-      padding: '7rem 0 8rem',
+      padding: isMobile ? '4rem 0 5rem' : '7rem 0 8rem',
       boxSizing: 'border-box',
       position: 'relative',
       overflow: 'hidden',
@@ -166,7 +169,7 @@ export function Testimonials() {
       <div style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        padding: '0 4rem',
+        padding: isMobile ? '0 1.5rem' : '0 4rem',
         boxSizing: 'border-box',
       }}>
         {/* Header */}
@@ -193,7 +196,7 @@ export function Testimonials() {
           </p>
           <h2 style={{
             fontFamily: 'sans-serif',
-            fontSize: 'clamp(2rem, 3.5vw, 3.2rem)',
+            fontSize: isMobile ? 'clamp(1.6rem, 5vw, 2.5rem)' : 'clamp(2rem, 3.5vw, 3.2rem)',
             fontWeight: 900,
             lineHeight: 1.1,
             margin: '0 auto',
@@ -207,11 +210,11 @@ export function Testimonials() {
         {/* Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
           gap: '1.5rem',
         }}>
           {testimonials.map((t, i) => (
-            <TestimonialCard key={i} t={t} index={i} visible={visible} />
+            <TestimonialCard key={i} t={t} index={i} visible={visible} isMobile={isMobile} />
           ))}
         </div>
       </div>

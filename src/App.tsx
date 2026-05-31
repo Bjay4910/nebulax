@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useIsMobile } from './hooks/useIsMobile';
 import { Footer } from "./components/Footer";
 import { Testimonials } from "./components/Testimonials";
 import { Features } from "./components/Features";
@@ -12,6 +13,8 @@ export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroUIRef = useRef<HTMLDivElement>(null);
   const images = useRef<HTMLImageElement[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -37,7 +40,8 @@ export default function App() {
       const hRatio = window.innerWidth / img.width;
       const vRatio = window.innerHeight / img.height;
       const ratio = Math.max(hRatio, vRatio);
-      const x = (window.innerWidth - img.width * ratio) / 2;
+      const isMobileCanvas = window.innerWidth <= 768;
+      const x = (window.innerWidth - img.width * ratio) / 2 - (isMobileCanvas ? canvas.width * 0.15 : 0);
       const y = (window.innerHeight - img.height * ratio) / 2;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, img.width, img.height, x, y, img.width * ratio, img.height * ratio);
@@ -86,7 +90,7 @@ export default function App() {
         left: 0,
         width: '100%',
         zIndex: 50,
-        padding: '1.5rem 3rem',
+        padding: isMobile ? '1.2rem 1.5rem' : '1.5rem 3rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -97,18 +101,61 @@ export default function App() {
         <div style={{ color: 'white', fontFamily: 'sans-serif', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.1em' }}>
           NEBULA<span style={{ color: '#E25B2D' }}>X</span>
         </div>
-        <div style={{ display: 'flex', gap: '2.5rem', fontFamily: 'sans-serif', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.1em' }}>
+
+        {/* Desktop links */}
+        {!isMobile && (
+          <div style={{ display: 'flex', gap: '2.5rem', fontFamily: 'sans-serif', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.1em' }}>
+            {[{name: 'Home', href: '#top'}, {name: 'Specs', href: '#specs'}, {name: 'Features', href: '#features'}, {name: 'About Us', href: '#about'}, {name: 'Blog', href: '#blog'}].map(link => (
+              <a key={link.name} href={link.href} style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', textTransform: 'uppercase' }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#E25B2D')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.8)')}
+              >{link.name}</a>
+            ))}
+          </div>
+        )}
+
+        {/* Desktop CTA */}
+        {!isMobile && (
+          <button style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.6rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', textTransform: 'uppercase' }}>
+            Explore
+          </button>
+        )}
+
+        {/* Hamburger */}
+        {isMobile && (
+          <button
+            onClick={() => setMenuOpen(m => !m)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.4rem', display: 'flex', flexDirection: 'column', gap: '5px' }}
+            aria-label="Toggle menu"
+          >
+            <div style={{ width: '22px', height: '2px', backgroundColor: menuOpen ? '#E25B2D' : 'white', transition: 'background-color 0.3s ease' }} />
+            <div style={{ width: '22px', height: '2px', backgroundColor: menuOpen ? '#E25B2D' : 'white', transition: 'background-color 0.3s ease' }} />
+            <div style={{ width: '22px', height: '2px', backgroundColor: menuOpen ? '#E25B2D' : 'white', transition: 'background-color 0.3s ease' }} />
+          </button>
+        )}
+      </nav>
+
+      {/* Mobile dropdown */}
+      {isMobile && menuOpen && (
+        <div style={{
+          position: 'fixed', top: '4rem', left: 0, right: 0, zIndex: 49,
+          backgroundColor: 'rgba(0,0,0,0.96)', backdropFilter: 'blur(16px)',
+          padding: '1.5rem 2rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.25rem',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+        }}>
           {[{name: 'Home', href: '#top'}, {name: 'Specs', href: '#specs'}, {name: 'Features', href: '#features'}, {name: 'About Us', href: '#about'}, {name: 'Blog', href: '#blog'}].map(link => (
-            <a key={link.name} href={link.href} style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', textTransform: 'uppercase' }}
+            <a key={link.name} href={link.href}
+              onClick={() => setMenuOpen(false)}
+              style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', textTransform: 'uppercase', fontFamily: 'sans-serif', fontSize: '0.9rem', fontWeight: 600, letterSpacing: '0.1em' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#E25B2D')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.8)')}
             >{link.name}</a>
           ))}
+          <button style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', textTransform: 'uppercase', alignSelf: 'flex-start', marginTop: '0.5rem' }}>
+            Explore
+          </button>
         </div>
-        <button style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.6rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', textTransform: 'uppercase' }}>
-          Explore
-        </button>
-      </nav>
+      )}
 
       {/* Hero UI — hidden past hero end */}
       <div ref={heroUIRef}>

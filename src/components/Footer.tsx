@@ -1,5 +1,8 @@
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export function Footer() {
+  const isMobile = useIsMobile();
+
   const cols = [
     { title: 'Product', links: ['Overview', 'Specs', 'Features', 'Pricing'] },
     { title: 'Company', links: ['About Us', 'Blog', 'Careers', 'Press'] },
@@ -9,8 +12,8 @@ export function Footer() {
   return (
     <footer style={{width: '100%', backgroundColor: '#080808', color: '#ffffff', padding: '5rem 0 2rem', boxSizing: 'border-box', position: 'relative'}}>
       <div style={{position: 'absolute', top: 0, left: '6rem', right: '6rem', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(226,91,45,0.4), transparent)'}} />
-      <div style={{maxWidth: '1280px', margin: '0 auto', padding: '0 4rem', boxSizing: 'border-box'}}>
-        <div style={{display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '4rem', marginBottom: '4rem'}}>
+      <div style={{maxWidth: '1280px', margin: '0 auto', padding: isMobile ? '0 1.5rem' : '0 4rem', boxSizing: 'border-box'}}>
+        <div style={{display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr 1fr 1fr', gap: isMobile ? '2.5rem' : '4rem', marginBottom: '4rem'}}>
           <div>
             <div style={{fontFamily: 'sans-serif', fontWeight: 900, fontSize: '1.6rem', letterSpacing: '0.1em', marginBottom: '1rem'}}>
               NEBULA<span style={{color: '#E25B2D'}}>X</span>
@@ -38,7 +41,15 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div style={{borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <div style={{
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          paddingTop: '2rem',
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          justifyContent: 'space-between',
+          gap: isMobile ? '1rem' : '0',
+        }}>
           <p style={{fontFamily: 'sans-serif', fontSize: '0.8rem', color: 'rgba(255,255,255,0.25)', margin: 0}}>
             2026 NebulaX. All rights reserved.
           </p>

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const specs = [
   {
@@ -53,15 +54,17 @@ interface Spec {
   icon: string;
 }
 
-function SpecCard({ spec, index, visible }: { spec: Spec; index: number; visible: boolean }) {
+function SpecCard({ spec, index, visible, isMobile }: { spec: Spec; index: number; visible: boolean; isMobile: boolean }) {
   const [hovered, setHovered] = useState(false);
+  const active = hovered || isMobile;
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        backgroundColor: hovered ? 'rgba(226,91,45,0.06)' : '#0B0B0C',
+        backgroundColor: active ? 'rgba(226,91,45,0.06)' : 'rgba(255,255,255,0.02)',
+        border: active ? '1px solid rgba(226,91,45,0.3)' : '1px solid rgba(255,255,255,0.06)',
         padding: '2.5rem',
         position: 'relative',
         transition: 'background-color 0.4s ease, opacity 0.6s ease, transform 0.6s ease',
@@ -90,7 +93,7 @@ function SpecCard({ spec, index, visible }: { spec: Spec; index: number; visible
           width: '3rem',
           height: '3rem',
           borderRadius: '0.75rem',
-          backgroundColor: hovered ? 'rgba(226,91,45,0.15)' : 'rgba(255,255,255,0.05)',
+          backgroundColor: active ? 'rgba(226,91,45,0.15)' : 'rgba(255,255,255,0.05)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -121,7 +124,7 @@ function SpecCard({ spec, index, visible }: { spec: Spec; index: number; visible
             fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
             fontWeight: 900,
             letterSpacing: '-0.03em',
-            color: hovered ? '#E25B2D' : '#ffffff',
+            color: active ? '#E25B2D' : '#ffffff',
             transition: 'color 0.4s ease',
           }}
         >
@@ -158,7 +161,9 @@ function SpecCard({ spec, index, visible }: { spec: Spec; index: number; visible
 export function Specs() {
   const [imgHovered, setImgHovered] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
+  const [cardsVisible, setCardsVisible] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -176,7 +181,7 @@ export function Specs() {
         width: '100%',
         backgroundColor: '#0B0B0C',
         color: '#ffffff',
-        padding: '7rem 0 8rem',
+        padding: isMobile ? '4rem 0 5rem' : '7rem 0 8rem',
         boxSizing: 'border-box',
         position: 'relative',
         overflow: 'hidden',
@@ -212,7 +217,7 @@ export function Specs() {
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          padding: '0 4rem',
+          padding: isMobile ? '0 1.5rem' : '0 4rem',
           boxSizing: 'border-box',
         }}
       >
@@ -220,8 +225,8 @@ export function Specs() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '5rem',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? '3rem' : '5rem',
             alignItems: 'center',
             marginBottom: '6rem',
           }}
@@ -248,7 +253,7 @@ export function Specs() {
             <h2
               style={{
                 fontFamily: 'sans-serif',
-                fontSize: 'clamp(2.2rem, 3.5vw, 3.5rem)',
+                fontSize: isMobile ? 'clamp(1.6rem, 5vw, 2.5rem)' : 'clamp(2.2rem, 3.5vw, 3.5rem)',
                 fontWeight: 900,
                 lineHeight: 1.1,
                 margin: '0 0 1.5rem',
@@ -279,7 +284,7 @@ export function Specs() {
             style={{
               position: 'relative',
               marginLeft: 'auto',
-              marginRight: '-2rem',
+              marginRight: isMobile ? '0' : '-2rem',
               overflow: 'hidden',
               borderRadius: '1.25rem',
             }}
@@ -304,7 +309,7 @@ export function Specs() {
                 position: 'relative',
                 zIndex: 1,
                 width: '100%',
-                height: '420px',
+                height: isMobile ? '220px' : '420px',
                 objectFit: 'cover',
                 borderRadius: '1.25rem',
                 border: '1px solid rgba(226,91,45,0.2)',
@@ -323,7 +328,7 @@ export function Specs() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
             gap: '1.5px',
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(255,255,255,0.04)',
@@ -332,7 +337,7 @@ export function Specs() {
           }}
         >
           {specs.map((spec, i) => (
-            <SpecCard key={i} spec={spec} index={i} visible={true} />
+            <SpecCard key={i} spec={spec} index={i} visible={true} isMobile={isMobile} />
           ))}
         </div>
       </div>

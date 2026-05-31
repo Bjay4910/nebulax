@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const features = [
   {
@@ -21,6 +22,7 @@ const features = [
 export function Features() {
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const check = () => {
@@ -42,7 +44,7 @@ export function Features() {
         width: '100%',
         backgroundColor: '#0d0d0e',
         color: '#ffffff',
-        padding: '7rem 0 8rem',
+        padding: isMobile ? '4rem 0 5rem' : '7rem 0 8rem',
         boxSizing: 'border-box',
         position: 'relative',
         overflow: 'hidden',
@@ -73,7 +75,7 @@ export function Features() {
       <div style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        padding: '0 4rem',
+        padding: isMobile ? '0 1.5rem' : '0 4rem',
         boxSizing: 'border-box',
       }}>
         {/* Header */}
@@ -100,7 +102,7 @@ export function Features() {
           </p>
           <h2 style={{
             fontFamily: 'sans-serif',
-            fontSize: 'clamp(2rem, 3.5vw, 3.2rem)',
+            fontSize: isMobile ? 'clamp(1.6rem, 5vw, 2.5rem)' : 'clamp(2rem, 3.5vw, 3.2rem)',
             fontWeight: 900,
             lineHeight: 1.1,
             margin: '0 auto',
@@ -114,11 +116,11 @@ export function Features() {
         {/* Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
           gap: '1.5rem',
         }}>
           {features.map((feature, i) => (
-            <FeatureCard key={i} feature={feature} index={i} visible={visible} />
+            <FeatureCard key={i} feature={feature} index={i} visible={visible} isMobile={isMobile} />
           ))}
         </div>
       </div>
@@ -132,16 +134,17 @@ interface Feature {
   description: string;
 }
 
-function FeatureCard({ feature, index, visible }: { feature: Feature; index: number; visible: boolean }) {
+function FeatureCard({ feature, index, visible, isMobile }: { feature: Feature; index: number; visible: boolean; isMobile: boolean }) {
   const [hovered, setHovered] = useState(false);
+  const active = hovered || isMobile;
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        backgroundColor: hovered ? 'rgba(226,91,45,0.06)' : 'rgba(255,255,255,0.02)',
-        border: hovered ? '1px solid rgba(226,91,45,0.3)' : '1px solid rgba(255,255,255,0.06)',
+        backgroundColor: active ? 'rgba(226,91,45,0.06)' : 'rgba(255,255,255,0.02)',
+        border: active ? '1px solid rgba(226,91,45,0.3)' : '1px solid rgba(255,255,255,0.06)',
         borderRadius: '1.5rem',
         padding: '2.5rem',
         cursor: 'default',
@@ -156,7 +159,7 @@ function FeatureCard({ feature, index, visible }: { feature: Feature; index: num
         width: '3.5rem',
         height: '3.5rem',
         borderRadius: '1rem',
-        backgroundColor: hovered ? 'rgba(226,91,45,0.15)' : 'rgba(255,255,255,0.05)',
+        backgroundColor: active ? 'rgba(226,91,45,0.15)' : 'rgba(255,255,255,0.05)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -171,7 +174,7 @@ function FeatureCard({ feature, index, visible }: { feature: Feature; index: num
         fontFamily: 'sans-serif',
         fontSize: '1.2rem',
         fontWeight: 800,
-        color: hovered ? '#E25B2D' : '#ffffff',
+        color: active ? '#E25B2D' : '#ffffff',
         margin: '0 0 1rem',
         transition: 'color 0.4s ease',
         letterSpacing: '-0.01em',
