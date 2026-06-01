@@ -161,7 +161,6 @@ function SpecCard({ spec, index, visible, isMobile }: { spec: Spec; index: numbe
 export function Specs() {
   const [imgHovered, setImgHovered] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
-  const [cardsVisible, setCardsVisible] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
