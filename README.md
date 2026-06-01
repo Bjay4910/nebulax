@@ -2,6 +2,8 @@
 
 A premium scrollytelling portfolio piece built for [Orductive](https://orductive.com).
 
+![NebulaX Preview](public/nebulax-preview.png)
+
 ## What it does
 
 As the user scrolls, a Mars rover explodes apart frame by frame on a pinned canvas — the Apple AirPods-style scroll-driven image sequence effect. Built to showcase Orductive's capability for cinematic, high-end frontend experiences.
@@ -14,6 +16,7 @@ As the user scrolls, a Mars rover explodes apart frame by frame on a pinned canv
 - Scroll-triggered fade-in animations
 - Burnt orange + dark theme design system
 - Fully responsive
+- Mobile hamburger navigation
 
 ## Stack
 
