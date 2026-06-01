@@ -71,6 +71,7 @@ export default function App() {
   return (
     <>
       <canvas
+        id="top"
         ref={canvasRef}
         style={{
           position: 'fixed',
@@ -105,8 +106,8 @@ export default function App() {
         {/* Desktop links */}
         {!isMobile && (
           <div style={{ display: 'flex', gap: '2.5rem', fontFamily: 'sans-serif', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.1em' }}>
-            {[{name: 'Home', href: '#top'}, {name: 'Specs', href: '#specs'}, {name: 'Features', href: '#features'}, {name: 'About Us', href: '#about'}, {name: 'Blog', href: '#blog'}].map(link => (
-              <a key={link.name} href={link.href} style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', textTransform: 'uppercase' }}
+            {[{name: 'Home', href: '#top'}, {name: 'Specs', href: '#specs'}, {name: 'Features', href: '#features'}, {name: 'About Us', href: '#about'}, {name: 'Blog', href: 'https://github.com/Bjay4910/nebulax', target: '_blank'}].map(link => (
+              <a key={link.name} href={link.href} target={link.target} rel={link.target ? 'noopener noreferrer' : undefined} style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', textTransform: 'uppercase' }}
                 onMouseEnter={e => (e.currentTarget.style.color = '#E25B2D')}
                 onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.8)')}
               >{link.name}</a>
@@ -116,7 +117,7 @@ export default function App() {
 
         {/* Desktop CTA */}
         {!isMobile && (
-          <button style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.6rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', textTransform: 'uppercase' }}>
+          <button onClick={() => document.getElementById('specs')?.scrollIntoView({ behavior: 'smooth' })} style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.6rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', textTransform: 'uppercase' }}>
             Explore
           </button>
         )}
@@ -143,15 +144,15 @@ export default function App() {
           padding: '1.5rem 2rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.25rem',
           borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}>
-          {[{name: 'Home', href: '#top'}, {name: 'Specs', href: '#specs'}, {name: 'Features', href: '#features'}, {name: 'About Us', href: '#about'}, {name: 'Blog', href: '#blog'}].map(link => (
-            <a key={link.name} href={link.href}
+          {[{name: 'Home', href: '#top'}, {name: 'Specs', href: '#specs'}, {name: 'Features', href: '#features'}, {name: 'About Us', href: '#about'}, {name: 'Blog', href: 'https://github.com/Bjay4910/nebulax', target: '_blank'}].map(link => (
+            <a key={link.name} href={link.href} target={link.target} rel={link.target ? 'noopener noreferrer' : undefined}
               onClick={() => setMenuOpen(false)}
               style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', textTransform: 'uppercase', fontFamily: 'sans-serif', fontSize: '0.9rem', fontWeight: 600, letterSpacing: '0.1em' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#E25B2D')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.8)')}
             >{link.name}</a>
           ))}
-          <button style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', textTransform: 'uppercase', alignSelf: 'flex-start', marginTop: '0.5rem' }}>
+          <button onClick={() => { setMenuOpen(false); document.getElementById('specs')?.scrollIntoView({ behavior: 'smooth' }); }} style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', textTransform: 'uppercase', alignSelf: 'flex-start', marginTop: '0.5rem' }}>
             Explore
           </button>
         </div>
@@ -185,10 +186,10 @@ export default function App() {
 
       {/* Specs appears after 400vh — sits in normal flow */}
       <div style={{ marginTop: '400vh', position: 'relative', zIndex: 40 }}>
-        <Specs />
-        <Features />
-        <Testimonials />
-        <Footer />
+        <div id="specs"><Specs /></div>
+        <div id="features"><Features /></div>
+        <div id="testimonials"><Testimonials /></div>
+        <div id="about"><Footer /></div>
       </div>
     </>
   );
