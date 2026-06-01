@@ -160,25 +160,25 @@ export default function App() {
 
       {/* Hero UI — hidden past hero end */}
       <div ref={heroUIRef}>
-        <div style={{ position: 'fixed', bottom: '4rem', left: '4rem', zIndex: 10, pointerEvents: 'none' }}>
+        <div style={{ position: 'fixed', ...(isMobile ? { top: '40%', left: '1.5rem' } : { bottom: '4rem', left: '4rem' }), zIndex: 10, pointerEvents: 'none' }}>
           <p style={{ color: '#E25B2D', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.3em', textTransform: 'uppercase', fontFamily: 'sans-serif', marginBottom: '0.5rem' }}>Rover</p>
           <h1 style={{ color: 'white', fontSize: '6vw', fontWeight: 900, fontFamily: 'sans-serif', lineHeight: 0.9, margin: 0, textShadow: '0 0 80px rgba(0,0,0,0.5)' }}>NEBULAX</h1>
         </div>
 
         <div style={{
-          position: 'fixed', bottom: '4rem', right: '3rem', zIndex: 20,
+          position: 'fixed', bottom: isMobile ? '1.5rem' : '4rem', right: isMobile ? '1rem' : '3rem', zIndex: 20,
           backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(16px)',
-          borderRadius: '1.2rem', padding: '1.5rem 2rem', maxWidth: '280px',
+          borderRadius: '1.2rem', padding: isMobile ? '1rem 1.2rem' : '1.5rem 2rem', maxWidth: isMobile ? '85%' : '280px',
           border: '1px solid rgba(255,255,255,0.1)',
         }}>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'sans-serif', fontSize: '0.8rem', marginBottom: '0.5rem' }}>Built for the unknown</p>
-          <h3 style={{ color: 'white', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '1rem', lineHeight: 1.4, marginBottom: '1rem' }}>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'sans-serif', fontSize: isMobile ? '0.64rem' : '0.8rem', marginBottom: '0.5rem' }}>Built for the unknown</p>
+          <h3 style={{ color: 'white', fontFamily: 'sans-serif', fontWeight: 700, fontSize: isMobile ? '0.8rem' : '1rem', lineHeight: 1.4, marginBottom: '1rem' }}>
             Experience <strong style={{ color: '#E25B2D' }}>extreme terrain</strong>, extended range & autonomous navigation
           </h3>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontFamily: 'sans-serif', fontSize: '0.8rem', marginBottom: '1.2rem' }}>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontFamily: 'sans-serif', fontSize: isMobile ? '0.64rem' : '0.8rem', marginBottom: '1.2rem' }}>
             Starting at <strong style={{ color: 'white' }}>$2,400,000</strong>
           </p>
-          <button style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.65rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', textTransform: 'uppercase', width: '100%' }}>
+          <button style={{ backgroundColor: '#E25B2D', color: 'white', border: 'none', padding: '0.65rem 1.5rem', borderRadius: '2rem', fontFamily: 'sans-serif', fontWeight: 700, fontSize: isMobile ? '0.64rem' : '0.8rem', cursor: 'pointer', textTransform: 'uppercase', width: '100%' }}>
             Learn More
           </button>
         </div>
