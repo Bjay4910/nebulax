@@ -20,6 +20,13 @@ export default function App() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
     let loaded = 0;
     for (let i = 1; i <= FRAME_COUNT; i++) {
       const img = new Image();
@@ -35,8 +42,6 @@ export default function App() {
       const ctx = canvas.getContext('2d');
       const img = images.current[index];
       if (!ctx || !img) return;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
       const hRatio = window.innerWidth / img.width;
       const vRatio = window.innerHeight / img.height;
       const ratio = Math.max(hRatio, vRatio);
@@ -48,6 +53,21 @@ export default function App() {
     };
 
     const HERO_END = window.innerHeight * 4;
+    let currentFrame = 0;
+    let targetFrame = 0;
+    let rafId: number;
+    let looping = false;
+
+    const animationLoop = () => {
+      currentFrame += (targetFrame - currentFrame) * 0.15;
+      drawFrame(Math.min(FRAME_COUNT - 1, Math.round(currentFrame)));
+      if (Math.abs(targetFrame - currentFrame) > 0.1) {
+        rafId = requestAnimationFrame(animationLoop);
+      } else {
+        currentFrame = targetFrame;
+        looping = false;
+      }
+    };
 
     const handleScroll = () => {
       const pastHero = window.scrollY >= HERO_END;
@@ -58,14 +78,21 @@ export default function App() {
 
       if (!pastHero) {
         const progress = Math.max(0, Math.min(window.scrollY / HERO_END, 1));
-        const index = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
-        requestAnimationFrame(() => drawFrame(index));
+        targetFrame = progress * FRAME_COUNT;
+        if (!looping) {
+          looping = true;
+          rafId = requestAnimationFrame(animationLoop);
+        }
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -162,7 +189,7 @@ export default function App() {
       <div ref={heroUIRef}>
         <div style={{ position: 'fixed', ...(isMobile ? { top: '40%', left: '1.5rem' } : { bottom: '4rem', left: '4rem' }), zIndex: 10, pointerEvents: 'none' }}>
           <p style={{ color: '#E25B2D', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.3em', textTransform: 'uppercase', fontFamily: 'sans-serif', marginBottom: '0.5rem' }}>Rover</p>
-          <h1 style={{ color: 'white', fontSize: '6vw', fontWeight: 900, fontFamily: 'sans-serif', lineHeight: 0.9, margin: 0, textShadow: '0 0 80px rgba(0,0,0,0.5)' }}>NEBULAX</h1>
+          <h1 style={{ color: 'white', fontSize: '6vw', fontWeight: 900, fontFamily: 'sans-serif', lineHeight: 0.9, margin: 0, textShadow: '0 0 80px rgba(0,0,0,0.5)' }}>NEBULA<span style={{ color: '#E25B2D' }}>X</span></h1>
         </div>
 
         <div style={{
